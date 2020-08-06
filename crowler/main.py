@@ -69,6 +69,7 @@ def check_online(url_parh, model, name, id):
             send_mqtt_success(f"Found for model: {name}, at url: {url_parh}", id)
     except Exception as e:
         send_mqtt_error(str(e), id)
+        raise e
 
 
 def check_in_store(url_parh, model, name, id, city):
@@ -77,6 +78,7 @@ def check_in_store(url_parh, model, name, id, city):
             send_mqtt_success(f"Found in store in {city} for model: {name}, at url: {url_parh}", id)
     except Exception as e:
         send_mqtt_error(str(e), id)
+        raise e
 
 
 def is_available_online(url, model):
@@ -85,9 +87,9 @@ def is_available_online(url, model):
         soup = BeautifulSoup(response.content, 'html.parser')
         status = soup.find("div", {"id": "dropdown-list-size"}).find("li", {"id": model}).get("class")[0]
         check_response_status(status)
+        return status == "available"
     except Exception as e:
         raise Exception(f"For model: {model} we have exception: {str(e)}")
-    return status == "available"
 
 
 def is_available_in_store(url, model):
