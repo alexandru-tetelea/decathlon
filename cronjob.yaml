@@ -4,6 +4,7 @@ metadata:
   name: decathlon
 spec:
   schedule: "*/1 * * * *"
+  concurrencyPolicy: Replace
   jobTemplate:
     spec:
       template:
